@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lama Go Viewer</title>
+        <script src="main.js"></script>
+    </head>
+    <style>
+    #menu {
+        height: 10%;
+        top: 0%;
+        left: 0;
+        position: absolute;
+        background: silver;
+    }
+    #board {
+        aspect-ratio: 1 / 1;
+        height: 90%;
+        top: 10%;
+        left: 0;
+        position: absolute;
+        background: burlywood;
+    }
+    .delimiter-y {
+        position: absolute;
+        width: 100%;
+        background: black;
+        height: 0.5%;
+    }
+    .delimiter-x {
+        position: absolute;
+        width: 0.5%;
+        background: black;
+        height: 100%;
+    }
+    .stone {
+        position: absolute;
+        border-radius: 50%;
+        background: black;
+    }
+    .background-black {
+        background: black;
+    }
+    .background-white {
+        background: white;
+    }
+    </style>
+<body>
+<div id="menu">
+    Hello World
+</div>
+<div id="board">
+    <div id="board-edges" style="position: absolute;">
+        <template id="delimiter-x-template">
+            <div class="delimiter-x"></div>
+        </template>
+        <template id="delimiter-y-template">
+            <div class="delimiter-y"></div>
+        </template>
+        <template id="stone-template">
+            <div class="stone"></div>
+        </template>
+        <!--
+        <div id="r0" class="delimiter-y" style="top: 0%"></div>
+        <div id="r1" class="delimiter-y" style="top: 12.5%"></div>
+        <div id="r2" class="delimiter-y" style="top: 25%"></div>
+        <div id="r3" class="delimiter-y" style="top: 37.5%"></div>
+        <div id="r4" class="delimiter-y" style="top: 50%"></div>
+        <div id="r5" class="delimiter-y" style="top: 62.5%"></div>
+        <div id="r6" class="delimiter-y" style="top: 75%"></div>
+        <div id="r7" class="delimiter-y" style="top: 87.5%"></div>
+        <div id="r8" class="delimiter-y" style="top: 100%"></div>
+
+        <div id="d0" class="delimiter-x" style="left: 0%"></div>
+        <div id="d1" class="delimiter-x" style="left: 12.5%"></div>
+        <div id="d2" class="delimiter-x" style="left: 25%"></div>
+        <div id="d3" class="delimiter-x" style="left: 37.5%"></div>
+        <div id="d4" class="delimiter-x" style="left: 50%"></div>
+        <div id="d5" class="delimiter-x" style="left: 62.5%"></div>
+        <div id="d6" class="delimiter-x" style="left: 75%"></div>
+        <div id="d7" class="delimiter-x" style="left: 87.5%"></div>
+        <div id="d8" class="delimiter-x" style="left: 100%"></div>
+        
+        <div id="s0" class="stone background-black" style="width: 12.5%; height: 12.5%; left: -6.25%; top: -6.25%"></div>
+        <div id="s1" class="stone background-white" style="width: 12.5%; height: 12.5%; left: 6.25%; top: -6.25%"></div>
+        -->
+    </div>
+</div>
+</body>
+</html>
