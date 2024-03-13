@@ -23,7 +23,7 @@ var LamaGoCore = (function () {
     LamaGoCore.prototype.getSize = function () {
         return this.size;
     };
-    LamaGoCore.DEFAULT_SIZE = 49;
+    LamaGoCore.DEFAULT_SIZE = 19;
     return LamaGoCore;
 }());
 var LamaGoBoard = (function () {
@@ -59,8 +59,4 @@ var LamaGoBoard = (function () {
     }
     return LamaGoBoard;
 }());
-document.addEventListener("DOMContentLoaded", function (event) {
-    var core = new LamaGoCore();
-    var board = new LamaGoBoard(core.getSize());
-});
 //# sourceMappingURL=main.js.map

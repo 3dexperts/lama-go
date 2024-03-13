@@ -78,7 +78,4 @@ class LamaGoBoard {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    var core = new LamaGoCore();
-    var board = new LamaGoBoard(core.getSize());
-});
+

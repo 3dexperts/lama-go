@@ -3,6 +3,17 @@
     <head>
         <title>Lama Go Viewer</title>
         <script src="main.js"></script>
+        <script type="module">
+            import init, { greet } from "./wasm_lama_go.js";
+            document.addEventListener("DOMContentLoaded", function(event) {
+                var core = new LamaGoCore();
+                var board = new LamaGoBoard(core.getSize());
+
+                init().then(() => {
+                    greet("WebAssembly");
+                });
+            });
+        </script>
     </head>
     <style>
     #menu {
