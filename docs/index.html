@@ -4,13 +4,21 @@
         <title>Lama Go Viewer</title>
         <script src="main.js"></script>
         <script type="module">
-            import init, { greet } from "./wasm_lama_go.js";
+            import init, { greet, BoardDecoder, BoardEncoder } from "./wasm_lama_go.js";
             document.addEventListener("DOMContentLoaded", function(event) {
                 var core = new LamaGoCore();
                 var board = new LamaGoBoard(core.getSize());
 
                 init().then(() => {
-                    greet("WebAssembly");
+                    //greet();
+                    const decoder = BoardDecoder.new(2);
+                    decoder.decode("A");
+                    const boardPtr = decoder.get_board();
+                    console.log(boardPtr);
+
+                    const encoder = BoardEncoder.new(2);
+                    encoder.encode("1100");
+                    console.log(encoder.get_encoded_string());
                 });
             });
         </script>
