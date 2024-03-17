@@ -1,12 +1,14 @@
 class LamaGoCore {
     private static DEFAULT_SIZE: number = 19;
     private currentParams: URLSearchParams;
+    private pathname: string;
     private size: number;
     private encodedBoard: string;
 
     public constructor() {
         const url = new URL(window.location.href);
         this.currentParams = url.searchParams;
+        this.pathname = url.origin;
 
         this.size = this.parseSize();
         this.encodedBoard = this.parseB();
@@ -41,6 +43,10 @@ class LamaGoCore {
 
     public getEncodedBoard(): string {
         return this.encodedBoard;
+    }
+
+    public getPathname(): string {
+        return this.pathname;
     }
 }
 
@@ -157,5 +163,21 @@ class LamaGoBoard {
                 stone.classList.add("background-white");
             }
         }
+    }
+
+    public getBoardString(): string {
+        let boardString = ""
+        let stones = document.getElementsByClassName("stone");
+        for (let i = 0; i < stones.length; i++) {
+            const stone = stones[i] as HTMLElement;
+            if (stone.classList.contains("background-black")) {
+                boardString += "1";
+            } else if (stone.classList.contains("background-white")) {
+                boardString += "2";
+            } else {
+                boardString += "0";
+            }
+        }
+        return boardString;
     }
 }
