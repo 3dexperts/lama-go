@@ -3,7 +3,6 @@ var LamaGoCore = (function () {
     function LamaGoCore() {
         var url = new URL(window.location.href);
         this.currentParams = url.searchParams;
-        this.pathname = url.origin;
         this.size = this.parseSize();
         this.encodedBoard = this.parseB();
     }
@@ -36,9 +35,6 @@ var LamaGoCore = (function () {
     };
     LamaGoCore.prototype.getEncodedBoard = function () {
         return this.encodedBoard;
-    };
-    LamaGoCore.prototype.getPathname = function () {
-        return this.pathname;
     };
     LamaGoCore.DEFAULT_SIZE = 19;
     return LamaGoCore;
