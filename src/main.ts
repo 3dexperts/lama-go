@@ -49,24 +49,27 @@ class LamaGoBoard {
     private boardEdges: HTMLElement | null;
     private delimiterXTemplate: HTMLTemplateElement | null;
     private delimiterYTemplate: HTMLTemplateElement | null;
-    private stoneTemplate: HTMLElement | null;
+    private stoneTemplate: HTMLTemplateElement | null;
 
     private stoneSize: number;
     private edgeSize: number;
+    private boardEdgeSize: number;
 
     public constructor(size: number) {
         this.board = document.getElementById("board");
         this.boardEdges = document.getElementById("board-edges");
         this.delimiterXTemplate = document.getElementById("delimiter-x-template") as HTMLTemplateElement;
         this.delimiterYTemplate = document.getElementById("delimiter-y-template") as HTMLTemplateElement;
-        this.stoneTemplate = document.getElementById("stone-template");
+        this.stoneTemplate = document.getElementById("stone-template") as HTMLTemplateElement;
 
         this.stoneSize = 100 / (size - 1);
         this.edgeSize = this.stoneSize / 2;
+        this.boardEdgeSize = size;
 
         // Configure
         if (this.boardEdges !== null
-            && this.delimiterXTemplate !== null) {
+            && this.delimiterXTemplate !== null
+            && this.delimiterYTemplate !== null) {
             // Edges
             this.boardEdges.style.top = this.edgeSize + "%";
             this.boardEdges.style.left = this.edgeSize + "%";
@@ -89,6 +92,52 @@ class LamaGoBoard {
                     this.boardEdges.appendChild(cloneY);
                 }
             }
+
+            if (this.stoneTemplate !== null) {
+                for (let i = 0; i < this.boardEdgeSize; i++) {
+                    for (let j = 0; j < this.boardEdgeSize; j++) {
+                        let cloneStone = this.stoneTemplate.content.cloneNode(true) as HTMLElement;
+                        if (cloneStone.firstElementChild !== null
+                            && cloneStone.firstElementChild instanceof HTMLElement) {
+                            cloneStone.firstElementChild.style.top = ((this.stoneSize / -2) + this.stoneSize *i) + "%";
+                            cloneStone.firstElementChild.style.left = ((this.stoneSize / -2) + this.stoneSize * j) + "%";
+                            cloneStone.firstElementChild.style.width = this.stoneSize + "%";
+                            cloneStone.firstElementChild.style.height = cloneStone.firstElementChild.style.width;
+                            cloneStone.firstElementChild.id = "s" + i + j;
+                            cloneStone.firstElementChild.addEventListener("click", LamaGoBoard.toggleStone);
+                            cloneStone.firstElementChild.dataset.type = "0";
+                            this.boardEdges.appendChild(cloneStone);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static toggleStone(this: HTMLElement) {
+        if (this.classList.contains("background-black")) {
+            this.classList.remove("background-black");
+            this.classList.add("background-white");
+
+            LamaGoBoard.toggleEdited(this, "2");
+        } else {
+            if (this.classList.contains("background-white")) {
+                this.classList.remove("background-white");
+
+                LamaGoBoard.toggleEdited(this, "0");
+            } else {
+                this.classList.add("background-black");
+
+                LamaGoBoard.toggleEdited(this, "1");
+            }
+        }
+    }
+
+    private static toggleEdited(element: HTMLElement, expectedType: string) {
+        if (element.dataset.type == expectedType) {
+            element.classList.remove("background-edited");
+        } else {
+            element.classList.toggle("background-edited", true);
         }
     }
 }
