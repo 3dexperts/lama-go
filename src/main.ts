@@ -1,14 +1,12 @@
 class LamaGoCore {
     private static DEFAULT_SIZE: number = 19;
     private currentParams: URLSearchParams;
-    private pathname: string;
     private size: number;
     private encodedBoard: string;
 
     public constructor() {
         const url = new URL(window.location.href);
         this.currentParams = url.searchParams;
-        this.pathname = url.origin;
 
         this.size = this.parseSize();
         this.encodedBoard = this.parseB();
@@ -43,10 +41,6 @@ class LamaGoCore {
 
     public getEncodedBoard(): string {
         return this.encodedBoard;
-    }
-
-    public getPathname(): string {
-        return this.pathname;
     }
 }
 

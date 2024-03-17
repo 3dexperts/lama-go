@@ -18,7 +18,7 @@
                     encoder.encode(boardString);
                     let encodedString = encoder.get_encoded_string();
 
-                    let url = core.getPathname();
+                    let url = window.location.protocol + '//' + window.location.host + window.location.pathname;
                     url += "?size=" + core.getSize() + "&b=" + encodedString;
 
                     navigator.clipboard.writeText(url);
@@ -80,15 +80,15 @@
     <button onClick="window.location.reload();">Reset changes</button>
     <button id="save-btn">Save and copy link</button>
     Board size:
-    <button onclick="location.href='/?size=5';">5</button>
-    <button onclick="location.href='/?size=6';">6</button>
-    <button onclick="location.href='/?size=7';">7</button>
-    <button onclick="location.href='/?size=8';">8</button>
-    <button onclick="location.href='/?size=9';">9</button>
-    <button onclick="location.href='/?size=11';">11</button>
-    <button onclick="location.href='/?size=13';">13</button>
-    <button onclick="location.href='/?size=15';">15</button>
-    <button onclick="location.href='/?size=19';">19</button>
+    <button onclick="location.href=window.location.pathname + '?size=5';">5</button>
+    <button onclick="location.href=window.location.pathname + '?size=6';">6</button>
+    <button onclick="location.href=window.location.pathname + '?size=7';">7</button>
+    <button onclick="location.href=window.location.pathname + '?size=8';">8</button>
+    <button onclick="location.href=window.location.pathname + '?size=9';">9</button>
+    <button onclick="location.href=window.location.pathname + '?size=11';">11</button>
+    <button onclick="location.href=window.location.pathname + '?size=13';">13</button>
+    <button onclick="location.href=window.location.pathname + '?size=15';">15</button>
+    <button onclick="location.href=window.location.pathname + '?size=19';">19</button>
 </div>
 <div id="board">
     <div id="board-edges" style="position: absolute;">
