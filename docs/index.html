@@ -8,13 +8,14 @@
             document.addEventListener("DOMContentLoaded", function(event) {
                 var core = new LamaGoCore();
                 var board = new LamaGoBoard(core.getSize());
+                var encodedBoard = core.getEncodedBoard();
 
                 init().then(() => {
                     //greet();
-                    const decoder = BoardDecoder.new(2);
-                    decoder.decode("A");
-                    const boardPtr = decoder.get_board();
-                    console.log(boardPtr);
+                    const decoder = BoardDecoder.new(core.getSize());
+                    decoder.decode(encodedBoard);
+                    const boardString = decoder.get_board();
+                    console.log(boardString);
 
                     const encoder = BoardEncoder.new(2);
                     encoder.encode("1100");
