@@ -16,6 +16,7 @@
                     decoder.decode(encodedBoard);
                     const boardString = decoder.get_board();
                     console.log(boardString);
+                    board.insertStones(boardString);
 
                     const encoder = BoardEncoder.new(2);
                     encoder.encode("1100");
@@ -69,7 +70,7 @@
     </style>
 <body>
 <div id="menu">
-    Hello World
+    <button onClick="window.location.reload();">Reset changes</button>
 </div>
 <div id="board">
     <div id="board-edges" style="position: absolute;">

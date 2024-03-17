@@ -140,6 +140,22 @@ class LamaGoBoard {
             element.classList.toggle("background-edited", true);
         }
     }
+
+    public insertStones(boardString: string) {
+        console.assert(this.boardEdgeSize * this.boardEdgeSize === boardString.length, "Size of boardString is different!")
+
+        let stones = document.getElementsByClassName("stone");
+        console.assert(stones.length === boardString.length, "Size of stones is different than boardString!")
+        for (let i = 0; i < stones.length; i++) {
+            const type = boardString.charAt(i);
+            const stone = stones[i] as HTMLElement;
+            stone.dataset.type = type;
+            stone.classList.remove("background-black", "background-white", "background-edited");
+            if (type === "1") {
+                stone.classList.add("background-black");
+            } else if (type === "2") {
+                stone.classList.add("background-white");
+            }
+        }
+    }
 }
-
-
