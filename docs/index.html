@@ -26,16 +26,11 @@
                 });
 
                 init().then(() => {
-                    //greet();
                     const decoder = BoardDecoder.new(core.getSize());
                     decoder.decode(encodedBoard);
                     const boardString = decoder.get_board();
                     console.log(boardString);
                     board.insertStones(boardString);
-
-                    const encoder = BoardEncoder.new(2);
-                    encoder.encode("1100");
-                    console.log(encoder.get_encoded_string());
                 });
             });
         </script>
