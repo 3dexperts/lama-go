@@ -22,7 +22,7 @@ impl Board {
     pub fn new(edge_size: u32) -> Board {
         Board {
             edge_size,
-            spots: vec!['\0'; (edge_size * edge_size) as usize],
+            spots: vec!['0'; (edge_size * edge_size) as usize],
         }
     }
 }
@@ -42,7 +42,7 @@ impl BoardDecoder {
     }
 
     pub fn clear(&mut self) {
-        self.board.spots.fill('\0');
+        self.board.spots.fill('0');
     }
 
     pub fn decode(&mut self, encoded_string: &str) -> bool {
