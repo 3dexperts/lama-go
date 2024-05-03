@@ -4,6 +4,8 @@ var LamaGoCore = (function () {
         var url = new URL(window.location.href);
         this.currentParams = url.searchParams;
         this.size = this.parseSize();
+        this.blackCapturedStones = this.parseNumber("bcs", 0);
+        this.whiteCapturedStones = this.parseNumber("wcs", 0);
         this.encodedBoard = this.parseB();
     }
     LamaGoCore.prototype.parseSize = function () {
@@ -15,6 +17,21 @@ var LamaGoCore = (function () {
             var parsedNumber = parseInt(size, 10);
             if (isNaN(parsedNumber)) {
                 return LamaGoCore.DEFAULT_SIZE;
+            }
+            else {
+                return parsedNumber;
+            }
+        }
+    };
+    LamaGoCore.prototype.parseNumber = function (argumentName, defaultValue) {
+        var size = this.currentParams.get(argumentName);
+        if (size === null) {
+            return defaultValue;
+        }
+        else {
+            var parsedNumber = parseInt(size, 10);
+            if (isNaN(parsedNumber)) {
+                return defaultValue;
             }
             else {
                 return parsedNumber;
@@ -33,6 +50,12 @@ var LamaGoCore = (function () {
     LamaGoCore.prototype.getSize = function () {
         return this.size;
     };
+    LamaGoCore.prototype.getBcs = function () {
+        return this.blackCapturedStones;
+    };
+    LamaGoCore.prototype.getWcs = function () {
+        return this.whiteCapturedStones;
+    };
     LamaGoCore.prototype.getEncodedBoard = function () {
         return this.encodedBoard;
     };
@@ -40,12 +63,16 @@ var LamaGoCore = (function () {
     return LamaGoCore;
 }());
 var LamaGoBoard = (function () {
-    function LamaGoBoard(size) {
+    function LamaGoBoard(size, bcs, wcs) {
+        this.bcsField = document.getElementById("bcs");
+        this.wcsField = document.getElementById("wcs");
         this.board = document.getElementById("board");
         this.boardEdges = document.getElementById("board-edges");
         this.delimiterXTemplate = document.getElementById("delimiter-x-template");
         this.delimiterYTemplate = document.getElementById("delimiter-y-template");
         this.stoneTemplate = document.getElementById("stone-template");
+        this.bcsCount = bcs;
+        this.wcsCount = wcs;
         this.stoneSize = 100 / (size - 1);
         this.edgeSize = this.stoneSize / 2;
         this.boardEdgeSize = size;
@@ -81,7 +108,27 @@ var LamaGoBoard = (function () {
                             cloneStone.firstElementChild.style.width = this.stoneSize + "%";
                             cloneStone.firstElementChild.style.height = cloneStone.firstElementChild.style.width;
                             cloneStone.firstElementChild.id = "s" + i + j;
-                            cloneStone.firstElementChild.addEventListener("click", LamaGoBoard.toggleStone);
+                            var tmpThis = this;
+                            cloneStone.firstElementChild.addEventListener("click", function () {
+                                var change = LamaGoBoard.toggleStone(this);
+                                if (change < 0) {
+                                    if (change == -1) {
+                                        tmpThis.bcsCount++;
+                                    }
+                                    else if (change == -2) {
+                                        tmpThis.wcsCount++;
+                                    }
+                                }
+                                else {
+                                    if (change == 1) {
+                                        tmpThis.bcsCount--;
+                                    }
+                                    else if (change == 2) {
+                                        tmpThis.wcsCount--;
+                                    }
+                                }
+                                tmpThis.renderCapturedStones();
+                            });
                             cloneStone.firstElementChild.dataset.type = "0";
                             this.boardEdges.appendChild(cloneStone);
                         }
@@ -89,30 +136,54 @@ var LamaGoBoard = (function () {
                 }
             }
         }
+        this.renderCapturedStones();
     }
-    LamaGoBoard.toggleStone = function () {
-        if (this.classList.contains("background-black")) {
-            this.classList.remove("background-black");
-            this.classList.add("background-white");
-            LamaGoBoard.toggleEdited(this, "2");
+    LamaGoBoard.toggleStone = function (element) {
+        if (element.classList.contains("background-black")) {
+            element.classList.remove("background-black");
+            element.classList.add("background-white");
+            if (LamaGoBoard.toggleEdited(element, "2") === false) {
+                if (element.dataset.type === "2") {
+                    return 2;
+                }
+            }
         }
         else {
-            if (this.classList.contains("background-white")) {
-                this.classList.remove("background-white");
-                LamaGoBoard.toggleEdited(this, "0");
+            if (element.classList.contains("background-white")) {
+                element.classList.remove("background-white");
+                if (LamaGoBoard.toggleEdited(element, "0")) {
+                    if (element.dataset.type === "1") {
+                        return -1;
+                    }
+                    else if (element.dataset.type === "2") {
+                        return -2;
+                    }
+                }
             }
             else {
-                this.classList.add("background-black");
-                LamaGoBoard.toggleEdited(this, "1");
+                element.classList.add("background-black");
+                if (LamaGoBoard.toggleEdited(element, "1") === false) {
+                    if (element.dataset.type === "1") {
+                        return 1;
+                    }
+                }
             }
         }
+        return 0;
     };
     LamaGoBoard.toggleEdited = function (element, expectedType) {
-        if (element.dataset.type == expectedType) {
+        if (element.dataset.type === expectedType) {
             element.classList.remove("background-edited");
+            return false;
         }
         else {
-            element.classList.toggle("background-edited", true);
+            return element.classList.toggle("background-edited", true);
+        }
+    };
+    LamaGoBoard.prototype.renderCapturedStones = function () {
+        if (this.bcsField !== null && this.wcsField !== null) {
+            this.bcsField.textContent = this.bcsCount.toString();
+            this.wcsField.textContent = this.wcsCount.toString();
         }
     };
     LamaGoBoard.prototype.insertStones = function (boardString) {
@@ -148,6 +219,12 @@ var LamaGoBoard = (function () {
             }
         }
         return boardString;
+    };
+    LamaGoBoard.prototype.getBcsCount = function () {
+        return this.bcsCount;
+    };
+    LamaGoBoard.prototype.getWcsCount = function () {
+        return this.wcsCount;
     };
     return LamaGoBoard;
 }());

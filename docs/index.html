@@ -7,7 +7,7 @@
             import init, { greet, BoardDecoder, BoardEncoder } from "./wasm_lama_go.js";
             document.addEventListener("DOMContentLoaded", function(event) {
                 var core = new LamaGoCore();
-                var board = new LamaGoBoard(core.getSize());
+                var board = new LamaGoBoard(core.getSize(), core.getBcs(), core.getWcs());
                 var encodedBoard = core.getEncodedBoard();
 
                 var saveButton = document.getElementById("save-btn");
@@ -19,7 +19,7 @@
                     let encodedString = encoder.get_encoded_string();
 
                     let url = window.location.protocol + '//' + window.location.host + window.location.pathname;
-                    url += "?size=" + core.getSize() + "&b=" + encodedString;
+                    url += "?size=" + core.getSize() + "&bcs=" + board.getBcsCount() + "&wcs=" + board.getWcsCount() + "&b=" + encodedString;
 
                     navigator.clipboard.writeText(url);
                     window.location.href = url;
@@ -89,6 +89,10 @@
     <button onclick="location.href=window.location.pathname + '?size=13';">13</button>
     <button onclick="location.href=window.location.pathname + '?size=15';">15</button>
     <button onclick="location.href=window.location.pathname + '?size=19';">19</button>
+    Captured black stones:
+    <span id="bcs">0</span>
+    ; Captured white stones:
+    <span id="wcs">0</span>
 </div>
 <div id="board">
     <div id="board-edges" style="position: absolute;">
